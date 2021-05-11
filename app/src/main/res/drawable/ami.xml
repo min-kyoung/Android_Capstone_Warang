@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false" >
+    <item android:drawable="@drawable/bear1"
+        android:duration="100" />
+    <item android:drawable="@drawable/bear2"
+        android:duration="100" />
+    <item android:drawable="@drawable/bear3"
+        android:duration="100" />
+    <item android:drawable="@drawable/bear5"
+        android:duration="100" />
+    <item android:drawable="@drawable/bear6"
+        android:duration="100" />
+    <item android:drawable="@drawable/bear7"
+        android:duration="100" />
+    <item android:drawable="@drawable/bear8"
+        android:duration="100" />
+
+
+</animation-list>
