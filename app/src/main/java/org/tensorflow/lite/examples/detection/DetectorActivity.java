@@ -26,13 +26,25 @@ import android.graphics.Paint.Style;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.media.ImageReader.OnImageAvailableListener;
+import android.os.Handler;
+import android.os.Message;
 import android.os.SystemClock;
+import android.util.Log;
 import android.util.Size;
 import android.util.TypedValue;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import org.tensorflow.lite.examples.detection.customview.OverlayView;
 import org.tensorflow.lite.examples.detection.customview.OverlayView.DrawCallback;
 import org.tensorflow.lite.examples.detection.env.BorderedText;
@@ -82,11 +94,18 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
   private BorderedText borderedText;
 
+  private TextView txt;
+  private ImageView correctView;
+  private TextView randomTxt;
+  private String label[];
+  private int i;
+
+
   @Override
   public void onPreviewSizeChosen(final Size size, final int rotation) {
     final float textSizePx =
-        TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP, TEXT_SIZE_DIP, getResources().getDisplayMetrics());
+            TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, TEXT_SIZE_DIP, getResources().getDisplayMetrics());
     borderedText = new BorderedText(textSizePx);
     borderedText.setTypeface(Typeface.MONOSPACE);
 
@@ -96,19 +115,19 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
     try {
       detector =
-          TFLiteObjectDetectionAPIModel.create(
-              this,
-              TF_OD_API_MODEL_FILE,
-              TF_OD_API_LABELS_FILE,
-              TF_OD_API_INPUT_SIZE,
-              TF_OD_API_IS_QUANTIZED);
+              TFLiteObjectDetectionAPIModel.create(
+                      this,
+                      TF_OD_API_MODEL_FILE,
+                      TF_OD_API_LABELS_FILE,
+                      TF_OD_API_INPUT_SIZE,
+                      TF_OD_API_IS_QUANTIZED);
       cropSize = TF_OD_API_INPUT_SIZE;
     } catch (final IOException e) {
       e.printStackTrace();
       LOGGER.e(e, "Exception initializing Detector!");
       Toast toast =
-          Toast.makeText(
-              getApplicationContext(), "Detector could not be initialized", Toast.LENGTH_SHORT);
+              Toast.makeText(
+                      getApplicationContext(), "Detector could not be initialized", Toast.LENGTH_SHORT);
       toast.show();
       finish();
     }
@@ -124,28 +143,37 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     croppedBitmap = Bitmap.createBitmap(cropSize, cropSize, Config.ARGB_8888);
 
     frameToCropTransform =
-        ImageUtils.getTransformationMatrix(
-            previewWidth, previewHeight,
-            cropSize, cropSize,
-            sensorOrientation, MAINTAIN_ASPECT);
+            ImageUtils.getTransformationMatrix(
+                    previewWidth, previewHeight,
+                    cropSize, cropSize,
+                    sensorOrientation, MAINTAIN_ASPECT);
 
     cropToFrameTransform = new Matrix();
     frameToCropTransform.invert(cropToFrameTransform);
 
     trackingOverlay = (OverlayView) findViewById(R.id.tracking_overlay);
     trackingOverlay.addCallback(
-        new DrawCallback() {
-          @Override
-          public void drawCallback(final Canvas canvas) {
-            tracker.draw(canvas);
-            if (isDebug()) {
-              tracker.drawDebug(canvas);
-            }
-          }
-        });
+            new DrawCallback() {
+              @Override
+              public void drawCallback(final Canvas canvas) {
+                tracker.draw(canvas);
+                if (isDebug()) {
+                  tracker.drawDebug(canvas);
+                }
+              }
+            });
 
     tracker.setFrameConfiguration(previewWidth, previewHeight, sensorOrientation);
+
+    txt= findViewById(R.id.txt);
+    correctView = findViewById(R.id.correctView);
+    correctView.bringToFront();
+    randomTxt = findViewById(R.id.randomTxt);
+
+    //random
+    randomStr();
   }
+
 
   @Override
   protected void processImage() {
@@ -173,59 +201,118 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     }
 
     runInBackground(
-        new Runnable() {
-          @Override
-          public void run() {
-            LOGGER.i("Running detection on image " + currTimestamp);
-            final long startTime = SystemClock.uptimeMillis();
-            final List<Detector.Recognition> results = detector.recognizeImage(croppedBitmap);
-            lastProcessingTimeMs = SystemClock.uptimeMillis() - startTime;
 
-            cropCopyBitmap = Bitmap.createBitmap(croppedBitmap);
-            final Canvas canvas = new Canvas(cropCopyBitmap);
-            final Paint paint = new Paint();
-            paint.setColor(Color.RED);
-            paint.setStyle(Style.STROKE);
-            paint.setStrokeWidth(2.0f);
+            new Runnable() {
+              @Override
+              public void run() {
 
-            float minimumConfidence = MINIMUM_CONFIDENCE_TF_OD_API;
-            switch (MODE) {
-              case TF_OD_API:
-                minimumConfidence = MINIMUM_CONFIDENCE_TF_OD_API;
-                break;
-            }
+                LOGGER.i("Running detection on image " + currTimestamp);
+                final long startTime = SystemClock.uptimeMillis();
+                final List<Detector.Recognition> results = detector.recognizeImage(croppedBitmap);
 
-            final List<Detector.Recognition> mappedRecognitions =
-                new ArrayList<Detector.Recognition>();
+                lastProcessingTimeMs = SystemClock.uptimeMillis() - startTime;
 
-            for (final Detector.Recognition result : results) {
-              final RectF location = result.getLocation();
-              if (location != null && result.getConfidence() >= minimumConfidence) {
-                canvas.drawRect(location, paint);
+                cropCopyBitmap = Bitmap.createBitmap(croppedBitmap);
+                final Canvas canvas = new Canvas(cropCopyBitmap);
+                final Paint paint = new Paint();
+                paint.setColor(Color.RED);
+                paint.setStyle(Style.STROKE);
+                paint.setStrokeWidth(2.0f);
 
-                cropToFrameTransform.mapRect(location);
+                float minimumConfidence = MINIMUM_CONFIDENCE_TF_OD_API;
+                switch (MODE) {
+                  case TF_OD_API:
+                    minimumConfidence = MINIMUM_CONFIDENCE_TF_OD_API;
+                    break;
+                }
 
-                result.setLocation(location);
-                mappedRecognitions.add(result);
-              }
-            }
+                final List<Detector.Recognition> mappedRecognitions =
+                        new ArrayList<Detector.Recognition>();
 
-            tracker.trackResults(mappedRecognitions, currTimestamp);
-            trackingOverlay.postInvalidate();
+                for (Detector.Recognition result : results) {
 
-            computingDetection = false;
+                  final RectF location = result.getLocation();
+                  if (location != null && result.getConfidence() >= minimumConfidence) {
+                    canvas.drawRect(location, paint);
 
-            runOnUiThread(
-                new Runnable() {
-                  @Override
-                  public void run() {
-                    showFrameInfo(previewWidth + "x" + previewHeight);
-                    showCropInfo(cropCopyBitmap.getWidth() + "x" + cropCopyBitmap.getHeight());
-                    showInference(lastProcessingTimeMs + "ms");
+                    cropToFrameTransform.mapRect(location);
+
+                    result.setLocation(location);
+                    mappedRecognitions.add(result);
+
                   }
-                });
-          }
-        });
+                }
+
+                tracker.trackResults(mappedRecognitions, currTimestamp);
+                trackingOverlay.postInvalidate();
+
+                computingDetection = false;
+
+                runOnUiThread(
+                        new Runnable() {
+                          @Override
+                          public void run() {
+                            showFrameInfo(previewWidth + "x" + previewHeight);
+                            showCropInfo(cropCopyBitmap.getWidth() + "x" + cropCopyBitmap.getHeight());
+                            showInference(lastProcessingTimeMs + "ms");
+                            txt.setText(results.get(0).getTitle());
+
+                            if((results.get(0).getConfidence()*100 >= 50)){
+
+                              String t = randomTxt.getText().toString();
+
+                              if(txt.getText().toString().contains(t)){
+                                Log.e("log : ", txt.getText().toString());
+                                Log.e("log1 : ", t+"");
+                                correctView.setImageResource(R.drawable.o);
+                                Animation animationDuration = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.duration);
+                                correctView.startAnimation(animationDuration);
+                                //txt.setVisibility(View.VISIBLE);
+
+                                //randomTxt.setBackgroundColor(Color.parseColor("#ED5593FD"));
+                        /*
+                        TimerTask myTask = new TimerTask() {
+                          @Override
+                          public void run() {
+                            randomStr();
+                          }
+                        };
+                        Timer timer = new Timer();
+                        timer.schedule(myTask,3000);
+                         */
+                                randomTxt.setVisibility(View.INVISIBLE);
+                                i = 0;
+                                new Handler().postDelayed(new Runnable() {
+                                  @Override
+                                  public void run() {
+                                    if(i==0){
+                                      randomStr();
+                                      randomTxt.setVisibility(View.VISIBLE);
+                                      //randomTxt.setBackgroundColor(Color.parseColor("#FFFFF8B8"));
+                                      i++;
+                                    }
+
+                                  }
+                                },3000);
+
+
+
+                              }else {
+                                correctView.setImageResource(R.drawable.x);
+                                Animation animationDuration = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.duration);
+                                correctView.startAnimation(animationDuration);
+                                //txt.setVisibility(View.GONE);
+                                randomTxt.setBackgroundColor(Color.parseColor("#FFFFF8B8"));
+                              }
+                            }
+                            else {
+                              correctView.setVisibility(View.GONE);
+                            }
+
+                          }
+                        });
+              }
+            });
   }
 
   @Override
@@ -243,21 +330,30 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
   private enum DetectorMode {
     TF_OD_API;
   }
+  private void randomStr(){
+    label = new String[]{"양배추,cabbage", "사과,apple", "사람,person", "비행기,airplane",
+            "라쿤,raccoon", "고양이,cat", "원숭이,monkey", "새,bird", "컵,cup", "핸드폰,cellphone",
+            "안경,glasses","자동차,car", "신발,shoes", "모자,hat", "모니터,monitor",
+            "마우스,mouse", "키보드,keyboard"};
 
+    int randomLabel = (int) (Math.random() * 16);
+
+    randomTxt.setText(label[randomLabel]);
+  }
   @Override
   protected void setUseNNAPI(final boolean isChecked) {
     runInBackground(
-        () -> {
-          try {
-            detector.setUseNNAPI(isChecked);
-          } catch (UnsupportedOperationException e) {
-            LOGGER.e(e, "Failed to set \"Use NNAPI\".");
-            runOnUiThread(
-                () -> {
-                  Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-                });
-          }
-        });
+            () -> {
+              try {
+                detector.setUseNNAPI(isChecked);
+              } catch (UnsupportedOperationException e) {
+                LOGGER.e(e, "Failed to set \"Use NNAPI\".");
+                runOnUiThread(
+                        () -> {
+                          Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+                        });
+              }
+            });
   }
 
   @Override

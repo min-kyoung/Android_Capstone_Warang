@@ -1,6 +1,8 @@
 <resources>
-    <string name="app_name">ar0422</string>
     <string name="game_view_content_description">Game view</string>
     <string name="tfe_od_app_name" translation_description="Object Detection demo app [CHAR_LIMIT=40]">TFL Detect</string>
     <string name="tfe_od_camera_error" translation_description="Error regarding camera support[CHAR_LIMIT=40]">This device doesn\'t support Camera2 API.</string>
+    <string name="app_name">AndroidTensorFlowMachineLearningExample</string>
+    <string name="toggle_camera">Toggle Camera</string>
+    <string name="detect_object">Detect Object</string>
 </resources>

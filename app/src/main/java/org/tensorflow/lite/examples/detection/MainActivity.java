@@ -1,8 +1,5 @@
 package org.tensorflow.lite.examples.detection;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.AnimationDrawable;
@@ -12,6 +9,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
     private Animation animation;
@@ -48,30 +47,22 @@ public class MainActivity extends AppCompatActivity {
         ImageButton go_study = (ImageButton)findViewById(R.id.go_study);
 
         go_study.setEnabled(false);
-        Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
+        Intent intent = new Intent(getApplicationContext(), StudyMenuActivity.class);
         startActivity(intent);
 
 
     }
 
     public void onClick_game(View view) {
-        ImageButton go_game = (ImageButton)findViewById(R.id.go_game);
-
-        //go_game.setEnabled(false);
-        Intent intent = new Intent(getApplicationContext(), CardActivity.class);
+        Intent intent = new Intent(getApplicationContext(), GameMenuActivity.class);
         startActivity(intent);
 
-        //유니티 플레이어 액티비티 실행
     }
 
     public void onClick_exercise(View view) {
-        ImageButton go_game = (ImageButton)findViewById(R.id.go_exercise);
 
-        //go_game.setEnabled(false);
-        Intent intent = new Intent(getApplicationContext(), CardActivity.class);
+        Intent intent = new Intent(getApplicationContext(), ExerciseActivity.class);
         startActivity(intent);
-
-        //유니티 플레이어 액티비티 실행
     }
 
 

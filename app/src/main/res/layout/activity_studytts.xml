@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".StudyTTSActivity">
+
+
+    <ImageView
+        android:id="@+id/correctView"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:layout_gravity="center"
+        android:duration="3000"
+        />
+
+    <com.wonderkiln.camerakit.CameraView
+        android:id="@+id/cameraView"
+        android:layout_width="500dp"
+        android:layout_height="456dp"
+        android:layout_gravity="center|top" />
+
+
+    <ImageView
+        android:id="@+id/imageViewResult"
+        android:layout_width="210dp"
+        android:layout_height="210dp"
+        android:padding="2dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginTop="460dp"
+        android:background="@drawable/background"
+        />
+
+    <!--
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:layout_marginTop="460dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+    </LinearLayout>
+    -->
+
+    <LinearLayout
+        android:id="@+id/textResult"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="590dp"
+        android:layout_gravity="center|top"
+        android:layout_marginLeft="120dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fadeScrollbars="false"
+            android:gravity="center"
+            android:maxLines="15"
+            android:scrollbars="vertical"
+            android:textColor="@android:color/black"
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/textEnglish"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fadeScrollbars="false"
+            android:gravity="center"
+            android:maxLines="15"
+            android:scrollbars="vertical"
+            android:textColor="@android:color/black"
+            android:textSize="25sp" />
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/earBtn"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="470dp"
+        android:layout_marginLeft="120dp"
+        android:layout_gravity="center|top"
+        android:background="@drawable/ear"
+        android:visibility="invisible"
+        />
+
+    <ImageButton
+        android:id="@+id/mouthBtn"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="470dp"
+        android:layout_marginLeft="120dp"
+        android:layout_gravity="center|top"
+        android:background="@drawable/mouth"
+
+        />
+
+
+    <!--STT-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="680dp"
+        android:background="#7C7C7C" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:layout_marginTop="690dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:id="@+id/listenBtn">
+
+        <ImageButton
+            android:id="@+id/listenEnglish"
+            android:layout_marginRight="30dp"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:background="@drawable/listen_eng"
+            android:text="영어로 듣기"
+            android:layout_marginEnd="50dp" />
+
+        <ImageButton
+            android:id="@+id/listenKorean"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_marginLeft="30dp"
+            android:background="@drawable/listen_kor"
+            android:text="한국어로 듣기"
+            android:layout_marginStart="50dp" />
+        <!--
+        <TextView
+            android:id="@+id/answer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="결과"
+            android:paddingLeft="30dp"/>
+            -->
+    </LinearLayout>
+    <!--TTS-->
+    <LinearLayout
+        android:id="@+id/speakBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:layout_marginTop="690dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="invisible">
+        <!--
+        <EditText
+            android:id="@+id/txtText"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+         -->
+
+        <ImageButton
+            android:id="@+id/speakEnglish"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_marginRight="50dp"
+            android:background="@drawable/speak_eng"
+            android:paddingRight="0dp"
+            android:text="영어로 말하기" />
+
+        <ImageButton
+            android:id="@+id/speakKorean"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_marginLeft="50dp"
+            android:padding="10dp"
+            android:background="@drawable/speak_kor"
+            android:text="한국어로 말하기"
+            android:layout_marginStart="50dp" />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/sttResult"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:layout_marginTop="790dp"
+
+        android:gravity="center"
+        android:textSize="25sp"
+        android:visibility="invisible" />
+    <!--android:layout_marginTop="810dp"-->
+    <ImageButton
+        android:layout_marginTop="600dp"
+        android:id="@+id/btnDetectObject"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="bottom|center"
+        android:background="@drawable/camera"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black" />
+
+</FrameLayout>

@@ -1,0 +1,11 @@
+양배추,cabbage
+사과,apple
+고양이,cat
+새,bird
+컵,cup
+핸드폰,cell phone
+안경,glasses
+자동차,car
+모자,hat
+모니터,monitor
+키보드,keyboard

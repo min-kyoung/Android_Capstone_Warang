@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.tensorflow.lite.examples.detection">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <uses-sdk />
 
@@ -28,7 +30,11 @@
 
         <activity android:name=".DetectorActivity"/>
         <activity android:name=".UnityPlayerActivity"/>
-        <activity android:name=".MenuActivity"/>
-        <activity android:name=".CardActivity"/>
+        <activity android:name=".StudyMenuActivity"/>
+        <activity android:name=".ExerciseActivity"/>
+        <activity android:name=".GameMenuActivity"/>
+        <activity android:name=".CardGameActivity"/>
+        <activity android:name=".StudyTTSActivity"/>
+
     </application>
 </manifest>
