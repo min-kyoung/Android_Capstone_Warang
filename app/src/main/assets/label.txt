@@ -16,4 +16,3 @@
 모니터,monitor
 마우스,mouse
 키보드,keyboard
-???

@@ -1,2 +1,2 @@
-rootProject.name = 'Tensorflow lite & AR Final'
+rootProject.name = 'TFLITE_AR_FINAL_REAL'
 include ':app', ':lib_interpreter', ':lib_task_api'

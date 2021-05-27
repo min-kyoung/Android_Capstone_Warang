@@ -1,11 +1,18 @@
-양배추,cabbage
-사과,apple
-고양이,cat
+비행기,airplane
+사과,Apple
 새,bird
-컵,cup
-핸드폰,cell phone
-안경,glasses
+책,book
+양배추,cabbage
 자동차,car
+고양이,cat
+핸드폰,cell phone
+컵,cup
+안경,glasses
 모자,hat
-모니터,monitor
 키보드,keyboard
+모니터,monitor
+원숭이,monkey
+마우스,mouse
+사람,person
+라쿤,raccoon
+신발,shoes
