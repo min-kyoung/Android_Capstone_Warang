@@ -42,14 +42,14 @@ public class GameMenuActivity extends AppCompatActivity {
 
 
     public void onClick_card(View view) {//카드게임
-        Toast.makeText(getApplicationContext(), "카드 학습을 시작합니다.", Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), "카드 학습을 시작합니다.", Toast.LENGTH_LONG).show();
 
         Intent intent = new Intent(getApplicationContext(), CardGameActivity.class);
         startActivity(intent);
     }
 
     public void onClick_treasure(View view) {//보물찾기
-        Toast.makeText(getApplicationContext(), "카드 학습을 시작합니다.", Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), "카드 학습을 시작합니다.", Toast.LENGTH_LONG).show();
 
         Intent intent = new Intent(getApplicationContext(), DetectorActivity.class);
         startActivity(intent);

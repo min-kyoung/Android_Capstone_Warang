@@ -30,9 +30,9 @@ public class CardGameActivity extends AppCompatActivity {
 
     Button start_btn;
 
-    int img_num[] = new int[4];
-    int pic_num[] = new int[4];
-    String pic_text[] = new String[4];
+    int img_num[];
+    int pic_num[];
+    String pic_text[];
     String pic_name;
     String pic_result;
     String split_text;
@@ -46,8 +46,9 @@ public class CardGameActivity extends AppCompatActivity {
     Button text_pic;
 
     Button check_btn;
+    int count;
 
-    @SuppressLint("WrongViewCast")
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,12 +89,20 @@ public class CardGameActivity extends AppCompatActivity {
     // 저장소에서 4개의 사진,텍스트 불러오기
     private void loadImgArr() {
         try{
+
             File file = new File(getFilesDir() + "/capture");
             File[] filelist = file.listFiles();
             final String[] text = new String[1];
+            count = 0;
+            count = Math.min(filelist.length, 4);
+            Log.e("count",count+" ");
+
+             img_num = new int[count];
+             pic_num = new int[count];
+             pic_text = new String[count];
 
             //4개 사진 랜덤으로 불러오기
-            for(int i=0; i<4; i++) {
+            for(int i=0; i<count; i++) {
                 img_num[i]=rand.nextInt(filelist.length);
 
                 for(int j=0;j<i;j++) {
@@ -109,7 +118,7 @@ public class CardGameActivity extends AppCompatActivity {
                 btn[i].setText(split_text);
 
                 //불러온 4개의 사진의 텍스트를 랜덤으로 배치
-                for(int k=0; k<4; k++){
+                for(int k=0; k<count; k++){
                     pic_num[k]=rand.nextInt(pic_text.length);
 
                     for(int j=0;j<k;j++) {
@@ -167,7 +176,7 @@ public class CardGameActivity extends AppCompatActivity {
                             }
                             check1=0;
                             check2=0;
-                            if(num==4){
+                            if(num==count){
                                 Log.e("tag","게임 끝");
                                 AlertDialog.Builder builder = new AlertDialog.Builder(CardGameActivity.this);
                                 builder.setTitle("게임 클리어").setMessage("축하합니다");

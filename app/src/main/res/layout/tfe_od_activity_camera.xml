@@ -38,15 +38,16 @@
 
             android:textSize="30sp"
             tools:ignore="HardcodedText" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:textSize="20sp"
-            android:gravity="center"
-            tools:ignore="HardcodedText"
+            android:background="#FFFFFF"
             android:fontFamily="@font/maple"
+            android:gravity="center"
             android:text="   을(를) 찾아보세요"
-            />
+            android:textSize="20sp"
+            tools:ignore="HardcodedText" />
     </LinearLayout>
     <!--
         <ImageButton
