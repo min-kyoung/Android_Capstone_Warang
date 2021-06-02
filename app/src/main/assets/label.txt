@@ -1,5 +1,5 @@
 양배추,cabbage
-사과,apple
+사과,Apple
 사람,person
 비행기,airplane
 라쿤,raccoon
@@ -7,7 +7,7 @@
 원숭이,monkey
 새,bird
 컵,cup
-핸드폰,cellphone
+핸드폰,cell phone
 안경,glasses
 책,book
 자동차,car

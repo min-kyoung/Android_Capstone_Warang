@@ -39,6 +39,8 @@ public class CardGameActivity extends AppCompatActivity {
 
     int check1 =0;
     int check2 =0;
+    int ck1 =0;
+    int ck2 =0;
     int num=0;
     Button[] btn = new Button[4];
     Button card_pic;
@@ -96,9 +98,9 @@ public class CardGameActivity extends AppCompatActivity {
             count = Math.min(filelist.length, 4);
             Log.e("count",count+" ");
 
-             img_num = new int[count];
-             pic_num = new int[count];
-             pic_text = new String[count];
+            img_num = new int[count];
+            pic_num = new int[count];
+            pic_text = new String[count];
 
             //4개 사진 랜덤으로 불러오기
             for(int i=0; i<count; i++) {
@@ -115,6 +117,7 @@ public class CardGameActivity extends AppCompatActivity {
                 split_text = pic_name.substring(0,pic_name.length()-4);
                 pic_text[i] = split_text;
                 btn[i].setText(split_text);
+                btn[i].setEnabled(true);
 
                 //불러온 4개의 사진의 텍스트를 랜덤으로 배치
                 for(int k=0; k<count; k++){
@@ -127,55 +130,60 @@ public class CardGameActivity extends AppCompatActivity {
                     }
                     pic_result = pic_text[pic_num[k]];
                     Text[k].setText(pic_result);
+
+
+                    Text[k].setEnabled(true);
+
                 }
 
-                final int finalI = i;
+                int finalI = i;
 
                 btn[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        card_pic = findViewById(v.getId());
                         check1 ++;
-                        if (check1==1){
-                            card_pic = findViewById(v.getId());
+                        if (check1%2==1){
+                            //ck1=1;
                             card_pic.setBackgroundResource(R.drawable.border_pic_click);
                             text[0] = btn[finalI].getText().toString();
 
                             Log.e("tag","사진 선택끝");
                             Log.e("tag",btn[finalI].getText()+"");
                         }
-
-                    }
-                });
-
-                Text[i].setOnClickListener(new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v) {
-                        check2 ++;
-                        if (check2==1){
-                            text_pic = findViewById(v.getId());
-                            text_pic.setBackgroundResource(R.drawable.border_text_click);
-                            Log.e("tag","텍스트 선택끝");
-                            Log.e("tag",Text[finalI].getText()+"");
+                        if (check1%2==0){
+                            //ck1=0;
+                            card_pic.setBackgroundResource(R.drawable.border_pic);
                         }
-
-                        if(check1==1 && check2 ==1){
-                            if(text[0].equals(Text[finalI].getText())){
+                        if(check1%2==1&& check2%2==1){
+                            if(card_pic.getText().toString().equals(text_pic.getText().toString())){
                                 Log.e("tag","일치");
                                 check_btn.setBackgroundResource(R.drawable.bear_match);
-                                Text[finalI].setBackgroundResource(R.drawable.match_pic);
-                                Text[finalI].setTextColor(Color.parseColor("#00ff0000"));
-                                num++;
+                                card_pic.setBackgroundResource(R.drawable.border_pic_click);
+                                text_pic.setEnabled(false);
+                                card_pic.setEnabled(false);
+                                text_pic.setBackgroundResource(R.drawable.match_pic);
+                                text_pic.setTextColor(Color.parseColor("#00ff0000"));
 
+                                num++;
                             }else{
                                 Log.e("tag","불일치");
                                 check_btn.setBackgroundResource(R.drawable.bear_mismatch);
                                 card_pic.setBackgroundResource(R.drawable.border_pic);
                                 text_pic.setBackgroundResource(R.drawable.border_text);
-
+                                text_pic.setEnabled(true);
+                                card_pic.setEnabled(true);
                             }
+
                             check1=0;
                             check2=0;
+                            //ck1=0;
+                            //ck2=0;
+
+
                             if(num==count){
+                                text_pic.setEnabled(true);
+                                card_pic.setEnabled(true);
                                 Log.e("tag","게임 끝");
                                 AlertDialog.Builder builder = new AlertDialog.Builder(CardGameActivity.this);
                                 builder.setTitle("게임 클리어").setMessage("축하합니다");
@@ -190,11 +198,75 @@ public class CardGameActivity extends AppCompatActivity {
                                 AlertDialog alertDialog = builder.create();
                                 alertDialog.show();
                             }
+                        }
+                    }
+                });
+
+                Text[i].setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        text_pic = findViewById(v.getId());
+                        check2 ++;
+                        if (check2%2==1){
+                            //ck2=1;
+                            text_pic.setBackgroundResource(R.drawable.border_text_click);
+                            Log.e("tag","텍스트 선택끝");
+                            Log.e("tag",Text[finalI].getText()+"");
+                        }
+                        else{
+                            //ck2=0;
+                            text_pic.setBackgroundResource(R.drawable.border_text);
+                        }
+
+                        if(check1%2==1&& check2%2==1){
+
+                            check1=0;
+                            check2=0;
+                            if(text_pic.getText().toString().equals(card_pic.getText().toString())){
+                                Log.e("tag","일치");
+                                check_btn.setBackgroundResource(R.drawable.bear_match);
+                                text_pic.setBackgroundResource(R.drawable.match_pic);
+                                text_pic.setTextColor(Color.parseColor("#00ff0000"));
+                                text_pic.setEnabled(false);
+                                card_pic.setEnabled(false);
+                                num++;
+                            }else{
+                                Log.e("tag","불일치");
+                                check_btn.setBackgroundResource(R.drawable.bear_mismatch);
+                                card_pic.setBackgroundResource(R.drawable.border_pic);
+                                text_pic.setBackgroundResource(R.drawable.border_text);
+
+                                card_pic.setEnabled(true);
+                                text_pic.setEnabled(true);
+                            }
+
+
+                            if(num==count){
+                                text_pic.setEnabled(true);
+                                card_pic.setEnabled(true);
+                                Log.e("tag","게임 끝");
+                                AlertDialog.Builder builder = new AlertDialog.Builder(CardGameActivity.this);
+                                builder.setTitle("게임 클리어").setMessage("축하합니다");
+                                builder.setPositiveButton("확인", new DialogInterface.OnClickListener(){
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int id)
+                                    {
+                                        click_restart();
+                                        loadImgArr();
+
+                                    }
+                                });
+                                AlertDialog alertDialog = builder.create();
+                                alertDialog.show();
+                            }
+
+
 
                         }
 
                     }
                 });
+
             }
 
         } catch (Exception e) {
@@ -214,13 +286,9 @@ public class CardGameActivity extends AppCompatActivity {
             check1=0;
             check2=0;
             check_btn.setBackgroundResource(R.drawable.bear);
+            btn[i].setEnabled(true);
+            Text[i].setEnabled(true);
         }
 
     }
-
-
-
-
-
 }
-

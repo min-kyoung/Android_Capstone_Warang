@@ -38,9 +38,12 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.tensorflow.lite.examples.warang.customview.OverlayView;
 import org.tensorflow.lite.examples.warang.customview.OverlayView.DrawCallback;
@@ -62,7 +65,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
   private static final int TF_OD_API_INPUT_SIZE = 300;
   private static final boolean TF_OD_API_IS_QUANTIZED = true;
   private static final String TF_OD_API_MODEL_FILE = "detect.tflite";
-  private static final String TF_OD_API_LABELS_FILE = "label.txt";
+  private static final String TF_OD_API_LABELS_FILE = "labels.txt";
   private static final DetectorMode MODE = DetectorMode.TF_OD_API;
   // Minimum detection confidence to track a detection.
   private static final float MINIMUM_CONFIDENCE_TF_OD_API = 0.5f;
@@ -96,6 +99,8 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
   private TextView randomTxt;
   private String label[];
   private int i;
+
+  final Random rand = new Random();
 
 
   @Override
@@ -329,15 +334,36 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     TF_OD_API;
   }
   private void randomStr(){
+
+    /*
     label = new String[]{"양배추,cabbage", "사과,apple", "사람,person", "비행기,airplane",
             "라쿤,raccoon", "고양이,cat", "원숭이,monkey", "새,bird", "컵,cup",
             "안경,glasses","자동차,car", "신발,shoes", "모자,hat", "모니터,monitor",
             "마우스,mouse", "키보드,keyboard"};
+    */
 
-    int randomLabel = (int) (Math.random() * 16);
 
-    randomTxt.setText(label[randomLabel]);
+    //randomTxt.setText(label[randomLabel]);
+
+    //다시 해보기
+      try{
+        //int randomLabel = (int) (Math.random() * 16);
+
+        File file = new File(getFilesDir() + "/capture");
+        File[] filelist = file.listFiles();
+
+        int randomLabel = rand.nextInt(filelist.length);
+        //randomTxt.setText(filelist[randomLabel].getName());
+        String str = filelist[randomLabel].getName();
+        String split_text = str.substring(0,str.length()-4);
+        randomTxt.setText(split_text);
+
+      } catch (Exception e) {
+        Toast.makeText(getApplicationContext(), "파일 불러오기 실패", Toast.LENGTH_SHORT).show();
+      }
+
   }
+
   @Override
   protected void setUseNNAPI(final boolean isChecked) {
     runInBackground(
