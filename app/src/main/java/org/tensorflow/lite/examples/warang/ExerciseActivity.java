@@ -6,16 +6,22 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -25,6 +31,12 @@ public class ExerciseActivity extends AppCompatActivity {
     private FloatingActionButton fbEraser;          //지우개 모드 버튼
     private FloatingActionButton fbClear;           // 전체지우개 모드 버튼
     private ConstraintLayout canvasContainer;       //캔버스 root view
+    private ImageButton preBtn;
+    private ImageButton nextBtn;
+    private TextView txt;
+    private int i = 0;
+    String str ;
+    String split_text ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,12 +44,21 @@ public class ExerciseActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         setContentView(R.layout.activity_card);
 
+        preBtn = findViewById(R.id.preBtn);
+        nextBtn = findViewById(R.id.nextBtn);
+        txt = findViewById(R.id.txt);
+
+
         //   ActionBar actionBar = getSupportActionBar();
         //  actionBar.hide();
 
         findId();
         canvasContainer.addView(drawCanvas);
         setOnClickListener();
+
+
+        printStr();
+
     }
 
     @Override
@@ -171,5 +192,86 @@ public class ExerciseActivity extends AppCompatActivity {
             invalidate();
             return true;
         }
+    }
+    private void printStr(){
+
+    /*
+    label = new String[]{"양배추,cabbage", "사과,apple", "사람,person", "비행기,airplane",
+            "라쿤,raccoon", "고양이,cat", "원숭이,monkey", "새,bird", "컵,cup",
+            "안경,glasses","자동차,car", "신발,shoes", "모자,hat", "모니터,monitor",
+            "마우스,mouse", "키보드,keyboard"};
+    */
+
+
+        //randomTxt.setText(label[randomLabel]);
+
+        try{
+            //int randomLabel = (int) (Math.random() * 16);
+
+            File file = new File(getFilesDir() + "/capture");
+            File[] filelist = file.listFiles();
+
+            i=0;
+            //assert filelist != null;
+            //txt.setText(filelist[i].getName());
+
+
+            str = filelist[i].getName();
+            split_text = str.substring(0,str.length()-4);
+            txt.setText(split_text);
+
+            if(i > 0 || i <filelist.length-1){
+                preBtn.setEnabled(true);
+            }
+            else {
+                preBtn.setEnabled(false);
+            }
+
+            if(i<filelist.length-2){
+                nextBtn.setEnabled(true);
+            }
+            else {
+                nextBtn.setEnabled(false);
+            }
+            preBtn.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+                @Override public void onClick(View v) {
+                    //preBtn.setEnabled(true);
+                    if(i>0 && i<filelist.length){
+                        //preBtn.setEnabled(true);
+                        i--;
+                        str = filelist[i].getName();
+                        split_text = str.substring(0,str.length()-4);
+                        txt.setText(split_text);
+                    }
+                    else {
+                        //preBtn.setEnabled(false);
+                    }
+
+                }
+            });
+
+            nextBtn.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+                @Override public void onClick(View v) {
+                    //nextBtn.setEnabled(true);
+                    if(i<filelist.length-1){
+                        //nextBtn.setEnabled(true);
+                        i++;
+                        str = filelist[i].getName();
+                        split_text = str.substring(0,str.length()-4);
+                        txt.setText(split_text);
+                    }
+                    else {
+                       // nextBtn.setEnabled(false);
+                    }
+
+                }
+            });
+
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), "파일 불러오기 실패", Toast.LENGTH_SHORT).show();
+        }
+
     }
 }

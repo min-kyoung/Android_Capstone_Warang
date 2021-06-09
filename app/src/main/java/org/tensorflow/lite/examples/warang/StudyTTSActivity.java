@@ -12,7 +12,9 @@ import android.os.Handler;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
+
 import android.speech.tts.TextToSpeech;
+
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;

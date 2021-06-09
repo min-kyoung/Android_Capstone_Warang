@@ -264,7 +264,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
                               String t = randomTxt.getText().toString();
 
-                              if(txt.getText().toString().contains(t)){
+                              if((txt.getText().toString().contains(t))&&(!t.equals(""))){
                                 Log.e("log : ", txt.getText().toString());
                                 Log.e("log1 : ", t+"");
                                 correctView.setImageResource(R.drawable.o);
