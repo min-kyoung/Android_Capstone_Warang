@@ -47,15 +47,26 @@
         android:background="@color/white"
         android:src="@drawable/next"
         tools:ignore="MissingConstraints"
-
         />
+
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/lo_canvas"
         android:layout_height="match_parent"
         android:layout_marginTop="100dp"
         android:layout_width="match_parent">
 
-
+        <ImageButton
+            android:id="@+id/picture1"
+            android:layout_width="195dp"
+            android:layout_height="195dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="30dp"
+            android:orientation="vertical"
+            tools:ignore="MissingConstraints">
+        </ImageButton>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fb_pen"

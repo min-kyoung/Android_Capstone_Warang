@@ -105,7 +105,6 @@ public class CardGameActivity extends AppCompatActivity {
             //4개 사진 랜덤으로 불러오기
             for(int i=0; i<count; i++) {
                 img_num[i]=rand.nextInt(filelist.length);
-
                 for(int j=0;j<i;j++) {
                     if (img_num[i] == (img_num[j])) {
                         i--;
@@ -122,7 +121,6 @@ public class CardGameActivity extends AppCompatActivity {
                 //불러온 4개의 사진의 텍스트를 랜덤으로 배치
                 for(int k=0; k<count; k++){
                     pic_num[k]=rand.nextInt(pic_text.length);
-
                     for(int j=0;j<k;j++) {
                         if (pic_num[k] == (pic_num[j])) {
                             k--;
@@ -130,10 +128,7 @@ public class CardGameActivity extends AppCompatActivity {
                     }
                     pic_result = pic_text[pic_num[k]];
                     Text[k].setText(pic_result);
-
-
                     Text[k].setEnabled(true);
-
                 }
 
                 int finalI = i;

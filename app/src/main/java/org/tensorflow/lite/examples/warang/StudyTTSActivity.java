@@ -462,7 +462,7 @@ public class StudyTTSActivity extends AppCompatActivity implements TextToSpeech.
 
     //tts
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP) private void speakKoreanOut() {
-        int result = tts.setLanguage(Locale.KOREA);
+        tts.setLanguage(Locale.KOREA);
         CharSequence text = textName.getText();
         //tts.setPitch((float) 0.6);
         tts.setPitch(1.0f);
@@ -472,7 +472,7 @@ public class StudyTTSActivity extends AppCompatActivity implements TextToSpeech.
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP) private void speakEnglishOut() {
-        int result = tts.setLanguage(Locale.ENGLISH);
+        tts.setLanguage(Locale.ENGLISH);
         CharSequence text = textEnglish.getText();
         //tts.setPitch((float) 0.6);
         tts.setPitch(1.0f);

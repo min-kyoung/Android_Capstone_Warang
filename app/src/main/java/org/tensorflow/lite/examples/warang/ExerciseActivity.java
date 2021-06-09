@@ -3,6 +3,7 @@ package org.tensorflow.lite.examples.warang;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -18,6 +19,8 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import androidx.annotation.Nullable;
@@ -33,10 +36,12 @@ public class ExerciseActivity extends AppCompatActivity {
     private ConstraintLayout canvasContainer;       //캔버스 root view
     private ImageButton preBtn;
     private ImageButton nextBtn;
+    private ImageButton imgBtn;
     private TextView txt;
     private int i = 0;
     String str ;
     String split_text ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +51,7 @@ public class ExerciseActivity extends AppCompatActivity {
 
         preBtn = findViewById(R.id.preBtn);
         nextBtn = findViewById(R.id.nextBtn);
+        imgBtn = findViewById(R.id.picture1);
         txt = findViewById(R.id.txt);
 
 
@@ -220,6 +226,11 @@ public class ExerciseActivity extends AppCompatActivity {
             split_text = str.substring(0,str.length()-4);
             txt.setText(split_text);
 
+            imgBtn.bringToFront();
+            Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(filelist[i]));
+            imgBtn.setImageBitmap(bitmap);
+
+
             if(i > 0 || i <filelist.length-1){
                 preBtn.setEnabled(true);
             }
@@ -243,6 +254,17 @@ public class ExerciseActivity extends AppCompatActivity {
                         str = filelist[i].getName();
                         split_text = str.substring(0,str.length()-4);
                         txt.setText(split_text);
+
+                        Bitmap bitmap = null;
+                        try {
+                            bitmap = BitmapFactory.decodeStream(new FileInputStream(filelist[i]));
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        imgBtn.bringToFront();
+                        imgBtn.setImageBitmap(bitmap);
+
+
                     }
                     else {
                         //preBtn.setEnabled(false);
@@ -261,6 +283,17 @@ public class ExerciseActivity extends AppCompatActivity {
                         str = filelist[i].getName();
                         split_text = str.substring(0,str.length()-4);
                         txt.setText(split_text);
+
+                        Bitmap bitmap = null;
+                        try {
+                            bitmap = BitmapFactory.decodeStream(new FileInputStream(filelist[i]));
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        imgBtn.bringToFront();
+                        imgBtn.setImageBitmap(bitmap);
+
+
                     }
                     else {
                        // nextBtn.setEnabled(false);
