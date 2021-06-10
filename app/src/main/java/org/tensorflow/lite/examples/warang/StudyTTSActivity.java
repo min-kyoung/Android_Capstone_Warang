@@ -201,7 +201,7 @@ public class StudyTTSActivity extends AppCompatActivity implements TextToSpeech.
 
                     File file = new File(storageDir, filename);
                     boolean deleted = file.delete();
-                    Log.e("사진 삭제", "delete :" + deleted);
+                    Log.e("사진 변경", ":" + deleted);
 
                     try {
                         output = new FileOutputStream(file);
